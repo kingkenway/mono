@@ -1,0 +1,52 @@
+<script type="application/javascript">
+    const mono = JSON.parse('<%- JSON.stringify(user) %>');
+
+    console.log(mono._id);
+
+    const copyToClipboard = text => {
+        const elm = document.createElement('textarea');
+        elm.value = text;
+        document.body.appendChild(elm);
+        elm.select();
+        document.execCommand('copy');
+        document.body.removeChild(elm);
+    };
+    var connect;
+    var config = {
+        key: "test_pk_VZNqVkDwETQUBeBVMWec",
+        onSuccess: function (response) {
+        // copyToClipboard(response.code);
+
+        (async function() {
+
+            const res = await fetch('/dashboard', { 
+                method: 'POST', 
+                body: JSON.stringify({ code: response.code, id: mono._id }),
+                headers: {'Content-Type': 'application/json'}
+            }).then(res_ => res_.json())
+            .then(function (res_) {
+
+                //   const data = await res.json();
+                console.log(res_);
+
+                // if (data.user) {
+                location.assign('/dashboard');
+                // }
+
+            });
+
+        })();
+
+
+        },
+        onClose: function () {
+        console.log('user closed the widget.')
+        }
+    };
+    connect = new Connect(config);
+    connect.setup();
+    var launch = document.getElementById('launch-btn');
+    launch.onclick = function (e) {
+        connect.open();
+    };
+</script>

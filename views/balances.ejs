@@ -1,0 +1,58 @@
+<%- include('partials/header'); -%>
+<%- include('partials/sidebar'); -%>
+
+<div class="w3-container w3-padding">
+  Account Balances
+  <hr />
+
+  <% if (mono['data']) { %>
+
+    <h2>
+        Your Account Balances
+        <hr>
+    </h2>
+
+    <p class="inp">
+        NAME:
+        <span><%= balances['account']['name'] %></span>
+    </p>
+    
+    <p class="inp">
+        BVN:
+        <span><%= balances['account']['bvn'] %></span>
+    </p>
+    
+    <p class="inp">
+        ACCOUNT NUMBER:
+        <span><%= balances['account']['accountNumber'] %></span>
+    </p>
+    
+    <p class="inp">
+        CURRENCY:
+        <span><%= balances['account']['currency'] %></span>
+    </p>
+    
+    <p class="inp">
+        BALANCE:
+        <span><%= setCurrency(balances['account']['balance']) %></span>
+    </p>
+    
+    <p class="inp">
+        TYPE:
+        <span><%= balances['account']['type'] %></span>
+    </p>
+    
+
+
+  <% } else { %>
+    <div class="w3-center">
+        Your account is not linked yet
+    </div>
+  <% } %>
+
+
+</div>
+
+<%- include('partials/sidebar_end'); -%>
+
+<%- include('partials/footer'); -%>

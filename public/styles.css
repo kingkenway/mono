@@ -23,7 +23,7 @@ nav{
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 120px;
+  margin-bottom: 40px;
 }
 nav ul{
   display: flex;
@@ -136,4 +136,18 @@ footer{
   text-align: center;
   margin-top: 120px;
   color: #aaa;
+}
+
+.inp > span {
+  font-weight: 100;
+}
+
+.inp{
+  font-weight: 800;
+  margin: 20px 0 0 0;
+}
+
+.sp{
+  max-width:100%;
+  white-space:nowrap;
 }

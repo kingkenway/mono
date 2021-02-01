@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Mono = require('../models/Mono');
 
 const requireAuth = ( req, res, next) => {
 	const token = req.cookies.jwt;
@@ -31,14 +32,23 @@ const checkUser = (req, res, next) => {
 				res.locals.user = null;
 				next();
 			}else{
-				console.log(decodedToken);
 				let user = await User.findById(decodedToken.id)
 				res.locals.user = user;
+
+				let monoAccount = await Mono.findOne({ userId:user.id })
+				res.locals.mono = {
+					data: monoAccount,
+					publicKey: 'test_sk_mxoqQLsvohKs3IHuaAfG'
+				}
+				
 				next();
 			}
 		});
 	}else{
 		res.locals.user = null;
+		res.locals.mono = {
+			publicKey: 'test_sk_mxoqQLsvohKs3IHuaAfG'
+		}
 		next();
 	}
 }
