@@ -13,7 +13,7 @@
 
 ### Introduction  
 
-[Project S.W.E.E.T LOANS](https://jumgaapp.netlify.app/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect API.  
+Project S.W.E.E.T LOANS[link](https://jumgaapp.netlify.app/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect API.  
 
 ### Overview  
 [Live URL](https://sweet-loans.herokuapp.com/)  
@@ -45,7 +45,7 @@ $ cd mono
 ## Local Environment Variables
 DATABASE_URL='Your Mongo DB URL'  
 MONO_SECRET_KEY='Your Mono Secret Key on your dashboard'  
-MONO_PUBLIC_KEY='Your Mono Secret Key on your dashboard'  
+MONO_PUBLIC_KEY='Your Mono Public Key on your dashboard'  
 
 ## Project setup
 ```
