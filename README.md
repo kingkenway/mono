@@ -11,7 +11,8 @@
 
 ## 1. Overview  
 
-Project #sweet-loans [(link)](https://sweet-loans.herokuapp.com/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect [API](https://docs.mono.co/reference).  
+Project #sweet-loans [(link)](https://sweet-loans.herokuapp.com/) is a web application that allows its user to connect their financial account, see their information, transactions, balances and also fetch real time data that happens on the financial account.  
+It is built with NodeJS Express, which basically implements the core features of the Mono-Connect [API](https://docs.mono.co/reference).  
 
 ## 2. Implementation  
 
