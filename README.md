@@ -9,7 +9,7 @@
 [3. Installation](#installation)  
 
 
-### Overview  
+### 1. Overview  
 
 Project S.W.E.E.T LOANS [link](https://sweet-loans.herokuapp.com/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect API.  
 
@@ -18,9 +18,9 @@ Project S.W.E.E.T LOANS [link](https://sweet-loans.herokuapp.com/) is a simple E
 MERCHANT'S COMMISSION ON SALE = 97.4%  
 ```
 
-### Implementation  
+### 2. Implementation  
 
-## Installation
+## 3. Installation
 
 The first thing to do is to clone the repository:
 
