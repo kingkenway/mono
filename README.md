@@ -15,11 +15,11 @@ Project #sweet-loans [(link)](https://sweet-loans.herokuapp.com/) is a simple Ex
 
 ## 2. Implementation  
 
-a. Create an account [here](https://app.withmono.com/register) on Mono, then wait for your account to be approved  
+a. Create an account [here](https://app.withmono.com/register) on Mono, then wait for your account to be approved.  
 
 b. Once confirmed, login to your dashboard and create an application. Thereafter, take note of your MONO_PUBLIC_KEY and MONO_PUBLIC_KEY.  
 
-c. Next you would embed the Mono Widget [here](https://docs.mono.co/docs) or [here](https://github.com/withmono/A-sample-widget-setup) on your application. Don't forget to change to your public key  
+c. Next you would need to embed the Mono Widget ( [here](https://docs.mono.co/docs) or [here](https://github.com/withmono/A-sample-widget-setup) ) on your application. Don't forget to change to your public key.  
 
 
 ## 3. Installation
