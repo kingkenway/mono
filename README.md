@@ -27,9 +27,14 @@ It is built with NodeJS Express, which basically implements the core features of
 
 2. After user has his/her account connected successfully, his Mono ID. is needed which leads to the application making a request to Mono's Authentication Endpoint -> https://api.withmono.com/account/auth through POST Method [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L32) <br />
 
-3. Once the user's ID. is fetched and stored in the db, his connected user information is immediately fetched through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8)
+3. Once the user's ID. is fetched and stored in the db, his connected user information is immediately fetched and loaded on the dashboard through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8) <br />
 
-4. The user can view his account balance
+4. The user can view his account balance through Mono's API Information Endpoint -> https://api.withmono.com/accounts/id through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L69) <br />
+
+5. The user views his recent (last 20) transactions, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L92) <br />
+
+6. Also, all transactions history with pagination is viewed, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction?page=1 through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L121) <br />
+
 
 ## 3. Installation
 
