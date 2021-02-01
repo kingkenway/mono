@@ -19,7 +19,7 @@ a. Create an account [here](https://app.withmono.com/register) on Mono, then wai
 
 b. Once confirmed, login to your dashboard and create an application. Thereafter, take note of your MONO_PUBLIC_KEY and MONO_PUBLIC_KEY.  
 
-c. Next you would embed the Mono Widget [here] [here](https://github.com/withmono/A-sample-widget-setup) on your application. Don't forget to change to your public key  
+c. Next you would embed the Mono Widget [here](https://docs.mono.co/docs) or [here](https://github.com/withmono/A-sample-widget-setup) on your application. Don't forget to change to your public key  
 
 
 ## 3. Installation
