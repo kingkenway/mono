@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 const controllers = require('./controllers/allControllers');
 const moment = require('moment');
+const port = process.env.PORT || 3000
 
 require('dotenv').config();
 
@@ -36,8 +37,8 @@ app.set('view engine', 'ejs');
 const dbURI = process.env['DATABASE_URL'];
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
   .then((result) => {
-  	console.log('Launched @ port 7000');
-  	app.listen(7000);
+  	console.log(`Launched @ port ${port}`);
+  	app.listen(port);
   })
   .catch((err) => console.log(err));
 
