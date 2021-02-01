@@ -12,33 +12,19 @@
 ## 1. Overview  
 
 Project #sweet-loans [(link)](https://sweet-loans.herokuapp.com/) is a simple web application that allows its users to connect their financial account, see their information, transactions, balances and also fetch real time data that happens on their financial account.  
-It is built with NodeJS Express, which basically implements the core features of the Mono-Connect [API](https://docs.mono.co/reference).  
+It is built with NodeJS Express, which basically implements the core features of the Mono-Connect [API](https://docs.mono.co/reference).
+
+### Walkthrough <br />
+1. It has a basic authentication system, where a user can Login, Signup and Logout of the system. <br />
+2. Once signed in, a user is faced with a dashboard where he has to link his account through the mono widget. <br />
+3. On successful linkup, the page forces reload and fetches all the user's connected information right on the dashboard.<br />
+4. Also from the side navigation, a user can view his account balance, his recent transaction history, and then all transaction histories with pagination.<br />
+5. Forcing refresh data sync from Mono's API failed constantly, with JSON response "This account can not be synced". This led to me sticking to normal page reload. <br />
+
 
 ## 2. Implementation  
 
-- Create an account [here](https://app.withmono.com/register) on Mono, then wait for your account to be approved.  
 
-- Once confirmed, login to your dashboard and create an application. Thereafter, take note of your MONO_SECRET_KEY and MONO_PUBLIC_KEY.  
-
-- Next you would need to embed the Mono Widget ( [here](https://docs.mono.co/docs) or [here](https://github.com/withmono/A-sample-widget-setup) ) on your application. Don't forget to change to your public key.  
-
-- Here, once user account is successfully linked from widget, the user's Mono code will be provided in this format which you would store in your database.  
-```javascript
-{
-    code: "some random code" // code returned from the mono widget
-}
-```  
-<br />
-
-- Now, you authenticate this code against Mono's API Endpoint -> https://api.withmono.com/account/auth using POST as the Method.
-```javascript
-{
-    id: "Mono ID. for current user" // code returned from the mono's authentication api
-}
-```  
-Also, ensure this ID. is stored in your database as it would be used in making future requests to Mono's API.
-
-- Now you are all set and ready to connect to Mono's Core APIs
 
 
 
