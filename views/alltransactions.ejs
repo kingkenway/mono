@@ -9,17 +9,30 @@
 
 
     <h2>
-        Last 20 Transactions
+        All Transactions
         <hr>
     </h2>
 
     <div class="w3-container">
-        <!-- <h2>Striped Bordered Table</h2> -->
+        <div class="w3-left">
+            <div class="w3-bar">
+                <% if (transactions.paging.previous) { %>
+                    <a href="<%= getPage(transactions.paging.previous) %>" class="w3-button">&laquo;</a>
+                <% } %>
 
-        <!-- <div class="w3-right">
-            Page <%= transactions.paging.page %> of <%= transactions.paging.total %>
+                <a class="">Page <%= transactions.paging.page %></a>
+
+                <% if (transactions.paging.next) { %>
+                    <a href="<%= getPage(transactions.paging.next) %>" class="w3-button">&raquo;</a>
+                <% } %>
+                
+            </div>
         </div>
-         -->
+
+        <div class="w3-right">
+            Page <%= transactions.paging.page %> of <%= Math.floor(transactions.paging.total/20) %>
+        </div>
+        
         <table class="w3-table w3-striped w3-bordered">
             <tr>
                 <th>S/N</th>
@@ -32,7 +45,9 @@
 
             <% for(var i=0; i < transactions.data.length; i++) { %>
                 <tr>
-                  <td><%= i+1 %></td>
+                  <td>
+                    <%= (i + 1) + ( transactions.paging.page * 20) -20  %>                
+                  </td>
                   <td><%= transactions.data[i].type %></td>
                   <td class="sp"><%= formatTime(transactions.data[i].date) %></td>
                   <td class="sp">NGN <%= setCurrency(transactions.data[i].amount) %></td>
@@ -44,13 +59,21 @@
         </table>
 
 
-        <!-- <div class="w3-center w3-margin-top">
+        <div class="w3-center w3-margin-top">
             <div class="w3-bar">
-                <a href="<% if (transactions.paging.previous) { getPage(transactions.paging.previous) } else{''} %>" class="w3-button">&laquo;</a>
-                <a class="w3-button"><%= transactions.paging.page %></a>
-                <a href="<% if (transactions.paging.next) { getPage(transactions.paging.next) } else{'2'} %>" class="w3-button">&raquo;</a>
+                <% if (transactions.paging.previous) { %>
+                    <a href="<%= getPage(transactions.paging.previous) %>" class="w3-button">&laquo;</a>
+                <% } %>
+
+                <a class="w3-button">Page <%= transactions.paging.page %></a>
+
+                <% if (transactions.paging.next) { %>
+                    <a href="<%= getPage(transactions.paging.next) %>" class="w3-button">&raquo;</a>
+                <% } %>
+                
             </div>
-        </div> -->
+        </div>
+        
     </div>
 
 

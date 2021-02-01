@@ -12,7 +12,7 @@ const requireAuth = ( req, res, next) => {
 				console.log(err.message);
 				res.redirect('/login');
 			}else{
-				console.log(decodedToken);
+				// console.log(decodedToken);
 				next();
 			}
 		});
@@ -38,7 +38,7 @@ const checkUser = (req, res, next) => {
 				let monoAccount = await Mono.findOne({ userId:user.id })
 				res.locals.mono = {
 					data: monoAccount,
-					publicKey: 'test_sk_mxoqQLsvohKs3IHuaAfG'
+					// publicKey: process.env['MONO_SECRET_KEY']
 				}
 				
 				next();
@@ -46,9 +46,7 @@ const checkUser = (req, res, next) => {
 		});
 	}else{
 		res.locals.user = null;
-		res.locals.mono = {
-			publicKey: 'test_sk_mxoqQLsvohKs3IHuaAfG'
-		}
+		res.locals.mono = null;
 		next();
 	}
 }

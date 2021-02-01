@@ -11,7 +11,7 @@ require('dotenv').config();
 const app = express();
 
 app.locals.getPage = function(page) {
-  const page_number = page.split("page=");
+  const page_number = page.split("page=")[1];
     return `?page=${page_number}`
 }
 
@@ -52,6 +52,8 @@ app.post('/dashboard', controllers.dashboardPost);
 app.get('/balances', requireAuth, controllers.balances, (req, res) => res.render('balances'));
 
 app.get('/transactions', requireAuth, controllers.transactions, (req, res) => res.render('transactions'));
+
+app.get('/alltransactions', requireAuth, controllers.alltransactions, (req, res) => res.render('alltransactions'));
 
 // app.get('/force-refresh', requireAuth, (req, res) => res.render('smoothies'));
 app.use(authRoutes);
