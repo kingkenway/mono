@@ -15,7 +15,7 @@ Project #sweet-loans [(link)](https://sweet-loans.herokuapp.com/) is a simple we
 It is built with NodeJS Express, which basically implements the core features of the Mono-Connect [API](https://docs.mono.co/reference).
 
 ### Walkthrough <br />
-1. It has a basic authentication system, where a user can [Login](https://sweet-loans.herokuapp.com/login), [Signup](https://sweet-loans.herokuapp.com/signup) and Logout of the system. <br />
+1. The web application has a basic authentication system, where a user can [Login](https://sweet-loans.herokuapp.com/login), [Signup](https://sweet-loans.herokuapp.com/signup) and Logout of the system. <br />
 2. Once signed in, a user is faced with a dashboard where he has to link his account through the mono widget. <br />
 3. On successful linkup, the page forces reload and fetches all the user's connected information right on the dashboard.<br />
 4. Also from the side navigation, a user can view his account balance, his recent transaction history, and then all transaction histories with pagination.<br />
@@ -23,9 +23,9 @@ It is built with NodeJS Express, which basically implements the core features of
 
 
 ## 2. Implementation  
-1. Firstly, the application has Mono's widget [embedded](https://github.com/kingkenway/mono/blob/master/views/partials/mono_dialog.ejs#L1), for users to connect their bank account. <br />
+1. Firstly, the application has Mono's widget [embedded](https://github.com/kingkenway/mono/blob/master/views/partials/mono_dialog.ejs#L1), for users to connect their bank account. Once successful, the application retrieves a code sent by Mono.  <br />
 
-2. After user has his/her account connected successfully, his Mono ID. is needed which leads to the application making a request to Mono's Authentication Endpoint -> https://api.withmono.com/account/auth through POST Method [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L32) <br />
+2. After user has his/her account connected successfully, his Mono ID. is needed which leads to the application making a request with the provide code in 1, to Mono's Authentication Endpoint -> https://api.withmono.com/account/auth through POST Method [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L32) <br />
 
 3. Once the user's ID. is fetched and stored in the db, his connected user information is immediately fetched and loaded on the dashboard through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8) <br />
 
@@ -33,7 +33,7 @@ It is built with NodeJS Express, which basically implements the core features of
 
 5. The user views his recent (last 20) transactions, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L92) <br />
 
-6. Also, all transactions history with pagination is viewed, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction?page=1 through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L121) <br />
+6. Also, all transaction history with pagination is viewed, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction?page=1 through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L121) <br />
 
 
 ## 3. Installation
