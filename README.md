@@ -43,9 +43,9 @@ $ cd mono
 ```
 
 ## Local Environment Variables
-DATABASE_URL='Your Mongo DB URL'
-MONO_SECRET_KEY='Your Mono Secret Key on your dashboard'
-MONO_PUBLIC_KEY='Your Mono Secret Key on your dashboard'
+DATABASE_URL='Your Mongo DB URL'  
+MONO_SECRET_KEY='Your Mono Secret Key on your dashboard'  
+MONO_PUBLIC_KEY='Your Mono Secret Key on your dashboard'  
 
 ## Project setup
 ```
