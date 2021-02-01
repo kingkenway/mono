@@ -1,4 +1,4 @@
-# Flutterwave Developer Challenge (J.U.M.G.A)  
+# Mono-Connect API Implementation
 
 ## Table of Contents  
 
@@ -8,22 +8,15 @@
 
 [Implementation](#implementation) 
 
-[Epilogue](#epilogue) 
-
-[Image Timeline of the Flutterwave Developer Challenge](#image-timeline-of-the-flutterwave-developer-challenge)  
-
 [Installation](#installation)  
 
 
 ### Introduction  
 
-[Project Jumga](https://jumgaapp.netlify.app/) is a Full stack application, powered with VueJS as the frontend and [Django as the backend](https://github.com/kingkenway/jumga/).
-It is a payment system powered by flutterwave, to help Merchants grow their businesses with ease.
+[Project S.W.E.E.T LOANS](https://jumgaapp.netlify.app/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect API.  
 
 ### Overview  
-[Live URL](https://jumgaapp.netlify.app/)  
-
-[TL;DR](#image-timeline-of-the-flutterwave-developer-challenge) 
+[Live URL](https://sweet-loans.herokuapp.com/)  
 
 
 ```
@@ -50,9 +43,9 @@ $ cd mono
 ```
 
 ## Local Environment Variables
-DATABASE_URL=
-MONO_SECRET_KEY=
-MONO_PUBLIC_KEY=
+DATABASE_URL=<Your Mongo DB URL>
+MONO_SECRET_KEY=<Your Mono Secret Key on your dashboard>
+MONO_PUBLIC_KEY=<Your Mono Secret Key on your dashboard>
 
 ## Project setup
 ```
