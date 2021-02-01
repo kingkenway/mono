@@ -37,7 +37,7 @@ It is built with NodeJS Express, which basically implements the core features of
 
 7. Lastly, I couln't get Mono's force refresh data sync to go through, since it kept throwing "message": "This account can not be synced." with "code": "SYNC_ERROR". This led to the application sticking to a good 'ol normal page reload.
 
-N.B Please note that the account is in Test mode, which implies that Mono's widget provides an option for test sign in. And also, all provided data from Mono's API are tests data. <br />
+N.B Please note that the application is in Test mode, which implies that Mono's widget provides an option for test sign in. And also, all provided data from Mono's API are tests data. <br />
 
 You can register [here](https://sweet-loans.herokuapp.com/signup) to give this application a shoot.
 
