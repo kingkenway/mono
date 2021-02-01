@@ -20,7 +20,7 @@ MERCHANT'S COMMISSION ON SALE = 97.4%
 
 ### 2. Implementation  
 
-## 3. Installation
+### 3. Installation
 
 The first thing to do is to clone the repository:
 
