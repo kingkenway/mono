@@ -28,6 +28,7 @@ It is built with NodeJS Express, which basically implements the core features of
     code: "some random code" // code returned from the mono widget
 }
 ```  
+\
 
 - Now, you authenticate this code against Mono's API Endpoint -> https://api.withmono.com/account/auth using POST as the Method.
 ```
