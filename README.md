@@ -23,12 +23,13 @@ It is built with NodeJS Express, which basically implements the core features of
 
 
 ## 2. Implementation  
-1. Firstly, the application has Mono's widget [embedded](https://github.com/kingkenway/mono/blob/master/views/partials/mono_dialog.ejs#L1), for users to connect their bank account.
+1. Firstly, the application has Mono's widget [embedded](https://github.com/kingkenway/mono/blob/master/views/partials/mono_dialog.ejs#L1), for users to connect their bank account. <br />
 
-2. 
+2. After user has his/her account connected successfully, his Mono ID. is needed which leads to the application making a request to Mono's Authentication Endpoint -> https://api.withmono.com/account/auth through POST Method [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L32) <br />
 
+3. Once the user's ID. is fetched and stored in the db, his connected user information is immediately fetched through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8)
 
-
+4. The user can view his account balance
 
 ## 3. Installation
 
