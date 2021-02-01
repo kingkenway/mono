@@ -22,20 +22,23 @@ It is built with NodeJS Express, which basically implements the core features of
 
 - Next you would need to embed the Mono Widget ( [here](https://docs.mono.co/docs) or [here](https://github.com/withmono/A-sample-widget-setup) ) on your application. Don't forget to change to your public key.  
 
-- Here, once user account is successfully linked from widget, the user's Mono code will be provided in this format  
+- Here, once user account is successfully linked from widget, the user's Mono code will be provided in this format which you would store in your database.  
 ```
 {
-	code: "some random code" // code returned from the mono widget
+    code: "some random code" // code returned from the mono widget
 }
 ```  
-Ensure this code is stored in your database.  
 
 - Now, you authenticate this code against Mono's API Endpoint -> https://api.withmono.com/account/auth using POST as the Method.
 ```
 {
-	id: "Mono ID. for current user" // code returned from the mono's authentication api
+    id: "Mono ID. for current user" // code returned from the mono's authentication api
 }
 ```  
+Also, ensure this ID. is stored in your database as it would be used in making future requests to Mono's API.
+
+- Now you are all set and ready to connect to Mono's Core APIs
+
 
 
 ## 3. Installation
