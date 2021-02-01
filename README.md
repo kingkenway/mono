@@ -1,6 +1,6 @@
 # Mono-Connect API Implementation
 
-## Table of Contents  
+## Quick Links
 
 [1. Overview](#1-overview) 
 
