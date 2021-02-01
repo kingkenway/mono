@@ -2,35 +2,23 @@
 
 ## Table of Contents  
 
-[Introduction](#introduction) 
+[1. Overview](#introduction) 
 
-[Cont'd](#contd) 
+[2. Implementation](#implementation) 
 
-[Implementation](#implementation) 
+[3. Installation](#installation)  
 
-[Installation](#installation)  
-
-
-### Introduction  
-
-Project S.W.E.E.T LOANS[link](https://jumgaapp.netlify.app/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect API.  
 
 ### Overview  
-[Live URL](https://sweet-loans.herokuapp.com/)  
 
+Project S.W.E.E.T LOANS[link](https://sweet-loans.herokuapp.com/) is a simple Express NodeJS application, that basically implements the core features of the Mono-Connect API.  
 
 ```
 ### Sales
 MERCHANT'S COMMISSION ON SALE = 97.4%  
 ```
-  
-### Cont'd
 
 ### Implementation  
-
-## Epilogue  
-
-
 
 ## Installation
 
