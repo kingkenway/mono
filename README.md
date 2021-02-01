@@ -2,11 +2,11 @@
 
 ## Table of Contents  
 
-[1. Overview](#overview) 
+[1. Overview](#1-overview) 
 
-[2. Implementation](#implementation) 
+[2. Implementation](#2-implementation) 
 
-[3. Installation](#installation)  
+[3. Installation](#3-installation)  
 
 
 ### 1. Overview  
