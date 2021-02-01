@@ -35,6 +35,9 @@ It is built with NodeJS Express, which basically implements the core features of
 
 6. Also, all transaction history with pagination is viewed, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction?page=1 through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L121) <br />
 
+N.B Please note that the account is in Test mode, which implies that Mono's widget provides option for test sign in. And also, all provided data from Mono's API are tests data. <br />
+
+You can register [here](https://sweet-loans.herokuapp.com/signup), and give a shoot.
 
 ## 3. Installation
 
@@ -58,5 +61,9 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-nodemon app.js or node app.js
+node app.js
+```
+or
+```
+nodemon app.js
 ```
