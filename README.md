@@ -35,9 +35,11 @@ It is built with NodeJS Express, which basically implements the core features of
 
 6. Also, all transaction history with pagination is viewed, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction?page=1 through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L121) <br />
 
-N.B Please note that the account is in Test mode, which implies that Mono's widget provides option for test sign in. And also, all provided data from Mono's API are tests data. <br />
+7. Lastly, I couln't get Mono's force refresh data sync to go through, since it kept throwing "message": "This account can not be synced." with "code": "SYNC_ERROR". This led to the application sticking to a good 'ol normal page reload.
 
-You can register [here](https://sweet-loans.herokuapp.com/signup), and give a shoot.
+N.B Please note that the account is in Test mode, which implies that Mono's widget provides an option for test sign in. And also, all provided data from Mono's API are tests data. <br />
+
+You can register [here](https://sweet-loans.herokuapp.com/signup) to give this application a shoot.
 
 ## 3. Installation
 
@@ -60,10 +62,10 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
-```
+```javascript
 node app.js
 ```
 or
-```
+```javascript
 nodemon app.js
 ```
