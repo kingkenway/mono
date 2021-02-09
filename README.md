@@ -27,7 +27,7 @@ It is built with NodeJS Express, which basically implements the core features of
 
 2. After user has his/her account connected successfully, his <b>Mono ID.</b> is needed which leads to the application making a request with the provided code in 1, to Mono's Authentication Endpoint -> https://api.withmono.com/account/auth through POST Method [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L32) <br />
 
-3. Once the user's Mono ID. is fetched and stored in the db, his connected user information is immediately fetched and loaded on the dashboard through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8) <br />
+3. Once the user's <b>Mono ID.</b> is fetched and stored in the db, his connected user information is immediately fetched and loaded on the dashboard through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8) <br />
 
 4. The user can view his account balance through Mono's API Information Endpoint -> https://api.withmono.com/accounts/id through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L69) <br />
 
