@@ -1,47 +1,45 @@
 # Mono-Connect API Implementation
 
-## Table of Contents
+## Quick Links
 
-[1. Overview](#1-overview)
+[1. Overview](#1-overview) 
 
-[2. Implementation](#2-implementation)
+[2. Implementation](#2-implementation) 
 
-[3. Installation](#3-installation)
+[3. Installation](#3-installation)  
 
-## 1. Overview
+
+## 1. Overview  
 
 Project #sweet-loans [(link)](https://sweet-loans.herokuapp.com/) is a simple web application that allows its users to connect their financial account, see their information, transactions, balances and also fetch real time data that happens on their financial account.  
 It is built with NodeJS Express, which basically implements the core features of the Mono-Connect [API](https://docs.mono.co/reference).
 
-## 2. Implementation
+### Walkthrough <br />
+1. The web application has a basic authentication system, where a user can [Login](https://sweet-loans.herokuapp.com/login), [Signup](https://sweet-loans.herokuapp.com/signup) and Logout of the system. <br />
+2. Once signed in, a user is faced with a dashboard where he has to link his account through the mono widget. <br />
+3. On successful linkup, the page forces reload and fetches all the user's connected information right on the dashboard.<br />
+4. Also from the side navigation, a user can view his account balance, his recent transaction history, and then all transaction histories with pagination.<br />
+5. Lastly, forcing refresh data sync from Mono's API failed constantly, with JSON response "This account can not be synced". This led to me sticking to normal page reload. <br />
 
-- Create an account [here](https://app.withmono.com/register) on Mono, then wait for your account to be approved.
 
-- Once confirmed, login to your dashboard and create an application. Thereafter, take note of your MONO_SECRET_KEY and MONO_PUBLIC_KEY.
+## 2. Implementation  
+1. Firstly, the application has Mono's widget [embedded](https://github.com/kingkenway/mono/blob/master/views/partials/mono_dialog.ejs#L1), for users to connect their bank account. Once successful, the application retrieves a code sent by Mono.  <br />
 
-- Next you would need to embed the Mono Widget ( [here](https://docs.mono.co/docs) or [here](https://github.com/withmono/A-sample-widget-setup) ) on your application. Don't forget to change to your public key.
+2. After user has his/her account connected successfully, his Mono ID. is needed which leads to the application making a request with the provide code in 1, to Mono's Authentication Endpoint -> https://api.withmono.com/account/auth through POST Method [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L32) <br />
 
-- Here, once user account is successfully linked from widget, the user's Mono code will be provided in this format which you would store in your database.
+3. Once the user's ID. is fetched and stored in the db, his connected user information is immediately fetched and loaded on the dashboard through Mono's API Identity Endpoint -> https://api.withmono.com/accounts/id/identity through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L8) <br />
 
-```javascript
-{
-  code: "some random code"; // code returned from the mono widget
-}
-```
+4. The user can view his account balance through Mono's API Information Endpoint -> https://api.withmono.com/accounts/id through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L69) <br />
 
-<br />
+5. The user views his recent (last 20) transactions, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L92) <br />
 
-- Now, you authenticate this code against Mono's API Endpoint -> https://api.withmono.com/account/auth using POST as the Method.
+6. Also, all transaction history with pagination is viewed, through Mono's API transaction Endpoint -> https://api.withmono.com/accounts/id/transaction?page=1 through GET Method right [here](https://github.com/kingkenway/mono/blob/master/controllers/allControllers.js#L121) <br />
 
-```javascript
-{
-  id: "Mono ID. for current user"; // code returned from the mono's authentication api
-}
-```
+7. Lastly, I couln't get Mono's force refresh data sync to go through, since the Scyn end point kept throwing-> "message": "This account can not be synced." with "code": "SYNC_ERROR". This led to the application sticking to a good 'ol normal page reload.
 
-Also, ensure this ID. is stored in your database as it would be used in making future requests to Mono's API.
+N.B Please note that the application is in Test mode, which implies that Mono's widget provides an option for test sign in. And also, all provided data from Mono's API are tests data. <br />
 
-- Now you are all set and ready to connect to Mono's Core APIs
+You can register [here](https://sweet-loans.herokuapp.com/signup) to give this application a shoot.
 
 ## 3. Installation
 
@@ -53,19 +51,20 @@ $ cd mono
 ```
 
 ## Local Environment Variables
-
 DATABASE_URL='Your Mongo DB URL'  
 MONO_SECRET_KEY='Your Mono Secret Key on your dashboard'  
-MONO_PUBLIC_KEY='Your Mono Public Key on your dashboard'
+MONO_PUBLIC_KEY='Your Mono Public Key on your dashboard'  
 
 ## Project setup
-
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
-
+```javascript
+node app.js
 ```
-nodemon app.js or node app.js
+or
+```javascript
+nodemon app.js
 ```
