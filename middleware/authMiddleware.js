@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Mono = require('../models/Mono');
+const Balance = require('../models/Balance');
+
 const secret = process.env.MONO_WEBHOOK_SEC;
 
 const requireAuth = ( req, res, next) => {
@@ -32,13 +34,24 @@ const checkUser = (req, res, next) => {
 				res.locals.user = null;
 				next();
 			}else{
+				let monoBalance = ""
 				let user = await User.findById(decodedToken.id)
 				res.locals.user = user;
 
 				let monoAccount = await Mono.findOne({ userId:user.id })
+
+				console.log(user.id);
+
+				if (monoAccount && monoAccount['monoId']){
+					monoBalance = await Balance.findOne({ monoId:monoAccount.monoId })
+				}
+
+
 				res.locals.mono = {
 					data: monoAccount,
-					publicKey: process.env['MONO_PUBLIC_KEY']
+					balance: monoBalance,
+					publicKey: process.env['MONO_PUBLIC_KEY'],
+					secretKey: process.env['MONO_SECRET_KEY']
 				}
 				
 				next();

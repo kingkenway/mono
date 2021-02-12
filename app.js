@@ -51,13 +51,14 @@ app.get('/dashboard', requireAuth, controllers.dashboard, (req, res) => res.rend
 
 app.post('/dashboard', controllers.dashboardPost);
 
+app.get('/manualsync', controllers.manualSync);
+
 app.get('/balances', requireAuth, controllers.balances, (req, res) => res.render('balances'));
 
 app.get('/transactions', requireAuth, controllers.transactions, (req, res) => res.render('transactions'));
 
 app.get('/alltransactions', requireAuth, controllers.alltransactions, (req, res) => res.render('alltransactions'));
 
-app.get('/sync', controllers.manualSync);
 
 app.post('/webhook', verifyWebhook, controllers.webhook);
 

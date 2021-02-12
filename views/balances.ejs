@@ -9,7 +9,51 @@
   <% } %>
   <hr />
 
-  <% if (mono['data']) { %>
+  <% if ( (mono['balance']['balance']) && (mono['data']) ) { %>
+
+
+    <h2>
+        Your Account Balance
+        <hr>
+    </h2>
+
+    <p class="inp">
+        NAME:
+        <span><%= mono['balance']['name'] %></span>
+    </p>
+    
+    <p class="inp">
+        BVN:
+        <span><%= mono['balance']['bvn'] %></span>
+    </p>
+    
+    <p class="inp">
+        ACCOUNT NUMBER:
+        <span><%= mono['balance']['accountNumber'] %></span>
+    </p>
+    
+    <p class="inp">
+        CURRENCY:
+        <span><%= mono['balance']['currency'] %></span>
+    </p>
+    
+    <p class="inp">
+        BALANCE:
+        <span><%= setCurrency(mono['balance']['balance']) %></span>
+    </p>
+    
+    <p class="inp">
+        TYPE:
+        <span><%= mono['balance']['type'] %></span>
+    </p>
+    
+
+
+
+
+
+
+  <% } else if (balances) { %>
 
     <h2>
         Your Account Balance
@@ -46,7 +90,6 @@
         <span><%= balances['account']['type'] %></span>
     </p>
     
-
 
   <% } else { %>
     <div class="w3-center">
@@ -87,24 +130,61 @@
 
     let sync = async () => {
 
-        const res = await fetch('/sync', { 
-            method: 'GET', 
-            // body: JSON.stringify({ code: response.code, id: user._id }),
-            headers: {'Content-Type': 'application/json'}
-        }).then(res_ => res_.json())
-        .then(function (res_) {
-            console.log(123);
-            //   const data = await res.json();
-            // console.log(res_);
-            // if (data.user) {
-            location.assign('/dashboard');
-            // }
-        });
-
+        // const res = await fetch('/manualsync', { 
+        //     method: 'GET', 
+        //     // body: JSON.stringify({ code: response.code, id: user._id }),
+        //     headers: {'Content-Type': 'application/json'}
+        // }).then(res_ => res_.json())
+        // .then(function (res_) {
+        //     console.log(123);
+        //     //   const data = await res.json();
+        //     console.log(res_);
+        //     // if (data.user) {
+        //     location.assign('/balances');
+        //     // }
+        // });
         
+        
+        // const res = await fetch('/manualsync', { 
+        //     method: 'GET', 
+        //     // body: JSON.stringify({ email, password }),
+        //     headers: {'Content-Type': 'application/json'}
+        // });
+
+        // const data = await res.json();
+        // console.log('---');
+        // console.log(data);
+        // console.log('---');
+
+        // location.assign('/balances');
+
+        console.log(monoData.data.monoId);
+
+        const url = `https://api.withmono.com/accounts/${monoData.data.monoId}/sync`
+
+		// console.log(123412345);
+
+		const response = await fetch(url, { 
+			method: 'POST', 
+			headers: {
+				'Content-Type': 'application/json',
+				'mono-sec-key': monoData.secretKey
+			}
+		});
+
+		const data = await response.json();
+        
+        console.log(data);
+		alert(data.code)
+
+        if (data.code == "SYNC_SUCCESSFUL"){
+            location.assign('/balances');
+        }
+    
 
     }
 
+    // sync(monoData.data.monoId)
 
 
 </script>

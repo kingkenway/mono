@@ -74,7 +74,10 @@ module.exports.dashboardPost = async (req,res, next) => {
 
 
 module.exports.balances = async (req,res, next) => {
+	console.log(res.locals.mono.data);
 	if( res.locals.mono.data != null ){
+
+		console.log(res.locals.mono.balance);
 
 		const url = `https://api.withmono.com/accounts/${res.locals.mono.data.monoId}`
 
@@ -94,6 +97,7 @@ module.exports.balances = async (req,res, next) => {
 		next();
 	}
 	else{
+		res.locals.balances = ""
 		next();
 	}
 }
@@ -240,7 +244,7 @@ module.exports.webhook = async (req,res, next) => {
 
 module.exports.manualSync = async (req,res, next) => {
 
-	if( res.locals.mono.data != null ){
+	if( res.locals.mono['data'] != null ){
 		const url = `https://api.withmono.com/accounts/${res.locals.mono['data']['monoId']}/sync`
 
 		// console.log(123412345);
