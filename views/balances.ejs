@@ -2,7 +2,11 @@
 <%- include('partials/sidebar'); -%>
 
 <div class="w3-container w3-padding">
-  Account Balances
+  Account Balances 
+
+  <% if (mono['data']) { %>
+  <span onclick="sync()" class="w3-button w3-border w3-round w3-right">Refresh</span>
+  <% } %>
   <hr />
 
   <% if (mono['data']) { %>
@@ -52,6 +56,58 @@
 
 
 </div>
+
+<script type="application/javascript">
+    const monoData = JSON.parse('<%- JSON.stringify(mono) %>');
+
+    // function sync() {
+    // //   alert("Hello World");
+    //     console.log(monoData)
+
+    //     (async function() {
+
+    //         const res = await fetch('/dashboard', { 
+    //             method: 'GET', 
+    //             // body: JSON.stringify({ code: response.code, id: user._id }),
+    //             headers: {'Content-Type': 'application/json'}
+    //         }).then(res_ => res_.json())
+    //         .then(function (res_) {
+    //             console.log(123);
+    //             //   const data = await res.json();
+    //             // console.log(res_);
+    //             // if (data.user) {
+    //             // location.assign('/dashboard');
+    //             // }
+    //         });
+
+    //     })();
+
+
+    // }
+
+    let sync = async () => {
+
+        const res = await fetch('/sync', { 
+            method: 'GET', 
+            // body: JSON.stringify({ code: response.code, id: user._id }),
+            headers: {'Content-Type': 'application/json'}
+        }).then(res_ => res_.json())
+        .then(function (res_) {
+            console.log(123);
+            //   const data = await res.json();
+            // console.log(res_);
+            // if (data.user) {
+            // location.assign('/dashboard');
+            // }
+        });
+
+        
+
+    }
+
+
+
+</script>
 
 <%- include('partials/sidebar_end'); -%>
 

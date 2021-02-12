@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Mono = require('../models/Mono');
+const secret = process.env.MONO_WEBHOOK_SEC;
 
 const requireAuth = ( req, res, next) => {
 	const token = req.cookies.jwt;
@@ -21,7 +22,6 @@ const requireAuth = ( req, res, next) => {
 	}
 }
 
-
 const checkUser = (req, res, next) => {
 	const token = req.cookies.jwt;
 
@@ -38,7 +38,7 @@ const checkUser = (req, res, next) => {
 				let monoAccount = await Mono.findOne({ userId:user.id })
 				res.locals.mono = {
 					data: monoAccount,
-					// publicKey: process.env['MONO_SECRET_KEY']
+					publicKey: process.env['MONO_PUBLIC_KEY']
 				}
 				
 				next();
@@ -51,5 +51,14 @@ const checkUser = (req, res, next) => {
 	}
 }
 
+const verifyWebhook = (req, res, next) => {
+    if (req.headers['mono-webhook-secret'] !== secret) {
+        return res.status(401).json({
+            message: "Unauthorized request."
+        });
+    }
 
-module.exports = { requireAuth, checkUser };
+    next();
+}
+
+module.exports = { requireAuth, checkUser, verifyWebhook };

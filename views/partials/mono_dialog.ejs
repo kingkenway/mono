@@ -1,7 +1,9 @@
 <script type="application/javascript">
-    const mono = JSON.parse('<%- JSON.stringify(user) %>');
+    const user = JSON.parse('<%- JSON.stringify(user) %>');
+    const monoData = JSON.parse('<%- JSON.stringify(mono) %>');
 
-    console.log(mono._id);
+    // console.log(user._id);
+    // console.log(monoData);
 
     const copyToClipboard = text => {
         const elm = document.createElement('textarea');
@@ -13,29 +15,28 @@
     };
     var connect;
     var config = {
-        key: "test_pk_VZNqVkDwETQUBeBVMWec",
+        key: monoData.publicKey,
         onSuccess: function (response) {
+            // alert(response.code)
         // copyToClipboard(response.code);
 
-        (async function() {
+            // Store code in db, with User ID.
+            (async function() {
 
-            const res = await fetch('/dashboard', { 
-                method: 'POST', 
-                body: JSON.stringify({ code: response.code, id: mono._id }),
-                headers: {'Content-Type': 'application/json'}
-            }).then(res_ => res_.json())
-            .then(function (res_) {
+                const res = await fetch('/dashboard', { 
+                    method: 'POST', 
+                    body: JSON.stringify({ code: response.code, id: user._id }),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(res_ => res_.json())
+                    .then(function (res_) {
+                        //   const data = await res.json();
+                        console.log(res_);
+                        // if (data.user) {
+                        location.assign('/dashboard');
+                        // }
+                    });
 
-                //   const data = await res.json();
-                console.log(res_);
-
-                // if (data.user) {
-                location.assign('/dashboard');
-                // }
-
-            });
-
-        })();
+            })();
 
 
         },

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Balance = require('../models/Balance');
 const jwt = require('jsonwebtoken');
 
 // JWT and Cookie expiry

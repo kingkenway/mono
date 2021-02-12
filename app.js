@@ -2,10 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
-const { requireAuth, checkUser } = require('./middleware/authMiddleware');
+const { requireAuth, checkUser, verifyWebhook } = require('./middleware/authMiddleware');
 const controllers = require('./controllers/allControllers');
 const moment = require('moment');
-const port = process.env.PORT || 3000
+
+const port = process.env.PORT || 8000
 
 require('dotenv').config();
 
@@ -55,6 +56,11 @@ app.get('/balances', requireAuth, controllers.balances, (req, res) => res.render
 app.get('/transactions', requireAuth, controllers.transactions, (req, res) => res.render('transactions'));
 
 app.get('/alltransactions', requireAuth, controllers.alltransactions, (req, res) => res.render('alltransactions'));
+
+app.get('/sync', controllers.manualSync);
+
+app.post('/webhook', verifyWebhook, controllers.webhook);
+
 
 // app.get('/force-refresh', requireAuth, (req, res) => res.render('smoothies'));
 app.use(authRoutes);

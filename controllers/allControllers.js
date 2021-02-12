@@ -1,6 +1,6 @@
 const Mono = require('../models/Mono');
+const Balance = require('../models/Balance');
 const fetch = require('node-fetch');
-
 
 module.exports.dashboard = async (req,res, next) => {
 
@@ -42,11 +42,18 @@ module.exports.dashboardPost = async (req,res, next) => {
 			}
 		}).then(res_ => res_.json())
 		  .then(function (res_) {
-			res.status(200).json(res_)
+			// res.status(200).json(res_)
 		
 			// try{
+
+			// Create instance in our Mono Collection
 			const user = Mono({ userId: id, monoId: res_.id, monoCode: code }).save();
+
+			// Create instance in our Balance Collection
+			Balance({ monoId: res_.id }).save();
 			res.status(200).json({ user })
+
+
 			// }
 			// catch (err){
 			// 	res.status(400).json({ errors: "errors" });
@@ -82,6 +89,8 @@ module.exports.balances = async (req,res, next) => {
 		const data = await response.json();
 		res.locals.balances = data;
 
+		// console.log(data);
+
 		next();
 	}
 	else{
@@ -106,6 +115,7 @@ module.exports.transactions = async (req,res, next) => {
 		});
 
 		const data = await response.json();
+		
 		res.locals.transactions = data;
 		next();
 	}
@@ -134,10 +144,122 @@ module.exports.alltransactions = async (req,res, next) => {
 		const data = await response.json();
 		res.locals.transactions = data;
 
+		console.log(data);
+
 		next();
 
 	}
 	else{
+		next();
+	}
+
+}
+
+const reauthorise = async function(id){
+		let url = `https://api.withmono.com/accounts/${id}/reauthorise`	
+
+		const response = await fetch(url, { 
+			method: 'GET', 
+			headers: {
+				'Content-Type': 'application/json',
+				'mono-sec-key': process.env['MONO_SECRET_KEY']
+			}
+		});
+
+		const data = await response.json();
+		return data;
+}
+
+// NOTE
+// This feature is only available to select partners. Reach out to us on slack about your product feature and why this should be enabled for your business.
+
+// By default, all connected accounts are automatically refreshed once every 24 hours.
+// You can contact us at hi@mono.co if you want to change the update frequency to:
+
+// 6h, all connected accounts will be refreshed every 6h (4 times a day)
+// 12h, all connected accounts will be refreshed every 12h (2 times a day)
+
+module.exports.webhook = async (req,res, next) => {
+
+	const webhook = req.body;
+
+	if (webhook.event = "mono.events.account_updated") {
+		if (webhook.data.meta.data_status == "AVAILABLE") { // AVAILABLE, PROCESSING, FAILED
+			
+			const data = webhook.data.account;
+
+			// You can update your records on success
+
+			const query = {
+				monoId: data._id
+			};
+
+			const result = {
+				$set: {
+					monoId: data._id,
+					institution: data.institution.name, // name:bankCode:type
+					name: data.name,
+					accountNumber: data.accountNumber,
+					type: data.type,
+					currency: data.currency,
+					balance: data.balance,
+					bvn: data.bvn
+				}
+			}
+
+			Balance.updateOne(query, result, {new: true}, function(err, res) {
+				// if (err) throw err;
+
+				// You could do other stuffs here if you want to				
+			});
+
+			// webhook.data.account
+		}
+		else if (webhook.data.meta.data_status == "PROCESSING") {
+			// Lol! Just chill and wait
+		}
+	}
+
+	else if (webhook.event == "mono.events.reauthorisation_required") {
+		// webhook.data.account._id
+
+		// You can retrieve your token here for re-authentication
+		reauthorise(webhook.data.account._id)
+	}
+
+	else if (webhook.event == "mono.events.account_reauthorized") {
+		// webhook.data.account._id
+
+		// Account Id. will be sent on successful reauthorisation.
+	}
+
+    return res.sendStatus(200);
+	
+}
+
+
+module.exports.manualSync = async (req,res, next) => {
+
+	if( res.locals.mono.data != null ){
+		const url = `https://api.withmono.com/accounts/${res.locals.mono['data']['monoId']}/sync`
+
+		// console.log(123412345);
+
+		const response = await fetch(url, { 
+			method: 'GET', 
+			headers: {
+				'Content-Type': 'application/json',
+				'mono-sec-key': process.env['MONO_SECRET_KEY']
+			}
+		});
+
+		const data = await response.json();
+
+		console.log(data);
+		// res.locals.dashboard = data;
+
+		next();
+	}else{
 		next();
 	}
 
