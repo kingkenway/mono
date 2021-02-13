@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Balance = require('../models/Balance');
+const WebH = require('../models/Webhook');
 const fetch = require('node-fetch');
 
 module.exports.dashboard = async (req,res, next) => {
@@ -173,6 +174,8 @@ module.exports.webhook = async (req,res, next) => {
 	const webhook = req.body;
 
 	if (webhook.event = "mono.events.account_updated") {
+		await WebH.create({test: "updated"});
+
 		if (webhook.data.meta.data_status == "AVAILABLE") { // AVAILABLE, PROCESSING, FAILED
 			
 			const data = webhook.data.account;
@@ -198,9 +201,12 @@ module.exports.webhook = async (req,res, next) => {
 
 			await Balance.updateOne(query, result, {new: true}, function(err, res) {});
 
+			await WebH.create({test: "updated___available"});
+
 			// webhook.data.account
 		}
 		else if (webhook.data.meta.data_status == "PROCESSING") {
+			await WebH.create({test: "updated___processing"});
 			// Lol! Just chill and wait
 		}
 	}
@@ -221,12 +227,17 @@ module.exports.webhook = async (req,res, next) => {
 		}
 
 		await User.updateOne(query, result, {new: true}, function(err, res) {});
+
+		await WebH.create({test: "reauthorisation_required"});
+
 	}
 
 	else if (webhook.event == "mono.events.account_reauthorized") {
 		// webhook.data.account._id
 
 		// Account Id. will be sent on successful reauthorisation. Nothing much to do here.
+		await WebH.create({test: "account_reauthorized"});
+
 	}
 
     return res.sendStatus(200);
