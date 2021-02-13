@@ -173,7 +173,7 @@ module.exports.webhook = async (req,res, next) => {
 
 	const webhook = req.body;
 
-	if (webhook.event = "mono.events.account_updated") {
+	if (webhook.event == "mono.events.account_updated") {
 		await WebH.create({test: "updated"});
 
 		if (webhook.data.meta.data_status == "AVAILABLE") { // AVAILABLE, PROCESSING, FAILED
