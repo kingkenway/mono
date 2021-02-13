@@ -48,7 +48,8 @@ module.exports.dashboardPost = async (req,res, next) => {
 			const dispatch = {
 				$set: {
 					monoId: res_.id,
-					monoCode: code
+					monoCode: code,
+					monoStatus: false
 				}
 			}
 			
@@ -149,7 +150,7 @@ module.exports.reauthorise = async function(id){
 		let url = `https://api.withmono.com/accounts/${id}/reauthorise`	
 
 		const response = await fetch(url, { 
-			method: 'GET', 
+			method: 'POST', 
 			headers: {
 				'Content-Type': 'application/json',
 				'mono-sec-key': process.env['MONO_SECRET_KEY']
@@ -157,6 +158,7 @@ module.exports.reauthorise = async function(id){
 		});
 
 		const data = await response.json();
+
 		return data.token;
 }
 
@@ -269,4 +271,23 @@ module.exports.manualSync = async (req,res, next) => {
 		next();
 	}
 
+}
+
+
+module.exports.monoReauth = async (req,res, next) => {
+
+	const query = {
+		monoId: req.body.id
+	};
+
+	const result = {
+		$set: {
+			monoStatus: true,
+		}
+	}
+
+	await User.updateOne(query, result, {new: true}, function(err, res) {});
+	
+	res.status(201).json({status: "redirect"});
+	
 }

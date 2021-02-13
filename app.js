@@ -59,7 +59,9 @@ app.get('/transactions', requireAuth, requireMonoReauthToken, controllers.transa
 
 app.get('/alltransactions', requireAuth, requireMonoReauthToken, controllers.alltransactions, (req, res) => res.render('alltransactions'));
 
-app.get('/monoReauth', requireAuth, controllers.alltransactions, (req, res) => res.render('monoreauth'));
+app.get('/monoReauth', requireAuth, (req, res) => res.render('monoreauth'));
+
+app.post('/monoReauth', controllers.monoReauth);
 
 app.post('/webhook', verifyWebhook, controllers.webhook);
 

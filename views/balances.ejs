@@ -112,6 +112,22 @@
         if (result.code == "SYNC_SUCCESSFUL"){
             location.assign('/balances');
         }
+        
+        else if(result.code == "REAUTHORISATION_REQUIRED"){
+
+            const response2 = await fetch('/monoReauth', { 
+                method: 'POST',
+                body: JSON.stringify({ id: data.user.monoId }),
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result2 = await response2.json();
+
+            if (result2.status == "redirect") {
+                location.assign('/monoReauth');
+            }
+
+        }
 
     }
 

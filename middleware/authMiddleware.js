@@ -31,7 +31,8 @@ const checkUser = (req, res, next) => {
 		jwt.verify(token, process.env['TOKEN'], async (err, decodedToken) => {
 			if (err) {
 				console.log(err.message);
-				res.locals.user = null;
+				res.locals.data = null;
+				res.locals.reauth = null;
 				next();
 			}else{
 				let monoBalance = ""
@@ -40,7 +41,8 @@ const checkUser = (req, res, next) => {
 				if (user && user['monoId']){
 					monoBalance = await Balance.findOne({ monoId:user.monoId })
 				}
-				
+
+				res.locals.reauth = null;				
 				res.locals.data = {
 					user,
 					monoBalance,
@@ -53,6 +55,7 @@ const checkUser = (req, res, next) => {
 		});
 	}else{
 		res.locals.data = null;
+		res.locals.reauth = null;
 		next();
 	}
 }
@@ -67,10 +70,23 @@ const verifyWebhook = (req, res, next) => {
     next();
 }
 
-const requireMonoReauthToken = ( req, res, next) => {
+const requireMonoReauthToken = async ( req, res, next) => {
 	if (res.locals.data.user.monoStatus) {
-		const reauthoriseToken = reauthorise(res.locals.data.user.monoId)
-		res.locals.data.reauth = {reauthoriseToken}
+		const reauthoriseToken = await reauthorise(res.locals.data.user.monoId)
+
+		const query = {
+			monoId: res.locals.data.user.monoId
+		};
+	
+		const result = {
+			$set: {
+				monoReauthToken: reauthoriseToken,
+			}
+		}
+	
+		await User.updateOne(query, result, {new: true}, function(err, res) {});
+
+		// res.locals.reauth = reauthoriseToken
 		res.redirect('/monoReauth');
 	}else{
 		next();

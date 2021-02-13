@@ -1,7 +1,7 @@
 <script type="application/javascript">
     const data = JSON.parse('<%- JSON.stringify(data) %>');
 
-    const reauthToken = data.reauth;
+    const reauthToken = data.user.monoReauthToken;
 
     const copyToClipboard = text => {
         const elm = document.createElement('textarea');
