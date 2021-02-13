@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
-const { requireAuth, checkUser, verifyWebhook } = require('./middleware/authMiddleware');
+const { requireAuth, checkUser, verifyWebhook, requireMonoReauthToken } = require('./middleware/authMiddleware');
 const controllers = require('./controllers/allControllers');
 const moment = require('moment');
 
@@ -47,18 +47,19 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCr
 app.get('*', checkUser);
 app.get('/', (req, res) => res.render('home'));
 
-app.get('/dashboard', requireAuth, controllers.dashboard, (req, res) => res.render('dashboard'));
+app.get('/dashboard', requireAuth, requireMonoReauthToken, controllers.dashboard, (req, res) => res.render('dashboard'));
 
 app.post('/dashboard', controllers.dashboardPost);
 
 app.get('/manualsync', controllers.manualSync);
 
-app.get('/balances', requireAuth, controllers.balances, (req, res) => res.render('balances'));
+app.get('/balances', requireAuth, requireMonoReauthToken, controllers.balances, (req, res) => res.render('balances'));
 
-app.get('/transactions', requireAuth, controllers.transactions, (req, res) => res.render('transactions'));
+app.get('/transactions', requireAuth, requireMonoReauthToken, controllers.transactions, (req, res) => res.render('transactions'));
 
-app.get('/alltransactions', requireAuth, controllers.alltransactions, (req, res) => res.render('alltransactions'));
+app.get('/alltransactions', requireAuth, requireMonoReauthToken, controllers.alltransactions, (req, res) => res.render('alltransactions'));
 
+app.get('/monoReauth', requireAuth, controllers.alltransactions, (req, res) => res.render('monoreauth'));
 
 app.post('/webhook', verifyWebhook, controllers.webhook);
 

@@ -4,61 +4,51 @@
 <div class="w3-container w3-padding">
   Account Balances 
 
-  <% if (mono['data']) { %>
-  <span onclick="sync()" class="w3-button w3-border w3-round w3-right">Refresh</span>
+  <% if ( data['user']['monoId'] ) { %>
+    <span onclick="sync()" class="w3-button w3-border w3-round w3-right">Refresh</span>
   <% } %>
   <hr />
+  
+  <h2>
+      Your Account Balance
+      <hr>
+  </h2>
 
-  <% if ( (mono['balance']['balance']) && (mono['data']) ) { %>
-
-
-    <h2>
-        Your Account Balance
-        <hr>
-    </h2>
+  <% if ( data['user']['monoBalance'] && data['user']['monoId'] ) { %>
 
     <p class="inp">
         NAME:
-        <span><%= mono['balance']['name'] %></span>
+        <span><%= data['monoBalance']['name'] %></span>
     </p>
     
     <p class="inp">
         BVN:
-        <span><%= mono['balance']['bvn'] %></span>
+        <span><%= data['monoBalance']['bvn'] %></span>
     </p>
     
     <p class="inp">
         ACCOUNT NUMBER:
-        <span><%= mono['balance']['accountNumber'] %></span>
+        <span><%= data['monoBalance']['accountNumber'] %></span>
     </p>
     
     <p class="inp">
         CURRENCY:
-        <span><%= mono['balance']['currency'] %></span>
+        <span><%= data['monoBalance']['currency'] %></span>
     </p>
     
     <p class="inp">
         BALANCE:
-        <span><%= setCurrency(mono['balance']['balance']) %></span>
+        <span><%= setCurrency(data['monoBalance']['balance']) %></span>
     </p>
     
     <p class="inp">
         TYPE:
-        <span><%= mono['balance']['type'] %></span>
+        <span><%= data['monoBalance']['type'] %></span>
     </p>
-    
-
-
-
 
 
 
   <% } else if (balances) { %>
-
-    <h2>
-        Your Account Balance
-        <hr>
-    </h2>
 
     <p class="inp">
         NAME:
@@ -101,91 +91,31 @@
 </div>
 
 <script type="application/javascript">
-    const monoData = JSON.parse('<%- JSON.stringify(mono) %>');
-
-    // function sync() {
-    // //   alert("Hello World");
-    //     console.log(monoData)
-
-    //     (async function() {
-
-    //         const res = await fetch('/dashboard', { 
-    //             method: 'GET', 
-    //             // body: JSON.stringify({ code: response.code, id: user._id }),
-    //             headers: {'Content-Type': 'application/json'}
-    //         }).then(res_ => res_.json())
-    //         .then(function (res_) {
-    //             console.log(123);
-    //             //   const data = await res.json();
-    //             // console.log(res_);
-    //             // if (data.user) {
-    //             // location.assign('/dashboard');
-    //             // }
-    //         });
-
-    //     })();
-
-
-    // }
+    const data = JSON.parse('<%- JSON.stringify(data) %>');
 
     let sync = async () => {
-
-        // const res = await fetch('/manualsync', { 
-        //     method: 'GET', 
-        //     // body: JSON.stringify({ code: response.code, id: user._id }),
-        //     headers: {'Content-Type': 'application/json'}
-        // }).then(res_ => res_.json())
-        // .then(function (res_) {
-        //     console.log(123);
-        //     //   const data = await res.json();
-        //     console.log(res_);
-        //     // if (data.user) {
-        //     location.assign('/balances');
-        //     // }
-        // });
-        
-        
-        // const res = await fetch('/manualsync', { 
-        //     method: 'GET', 
-        //     // body: JSON.stringify({ email, password }),
-        //     headers: {'Content-Type': 'application/json'}
-        // });
-
-        // const data = await res.json();
-        // console.log('---');
-        // console.log(data);
-        // console.log('---');
-
-        // location.assign('/balances');
-
-        console.log(monoData.data.monoId);
-
-        const url = `https://api.withmono.com/accounts/${monoData.data.monoId}/sync`
-
-		// console.log(123412345);
+        const url = `https://api.withmono.com/accounts/${data.user.monoId}/sync`
 
 		const response = await fetch(url, { 
 			method: 'POST', 
 			headers: {
 				'Content-Type': 'application/json',
-				'mono-sec-key': monoData.secretKey
+				'mono-sec-key': data.secretKey
 			}
 		});
 
-		const data = await response.json();
+		const result = await response.json();
         
-        console.log(data);
-		alert(data.code)
+        console.log(result);
+		alert(result.code)
 
-        if (data.code == "SYNC_SUCCESSFUL"){
+        if (result.code == "SYNC_SUCCESSFUL"){
             location.assign('/balances');
         }
-    
 
     }
 
-    // sync(monoData.data.monoId)
-
+    // sync(data.user.monoId)
 
 </script>
 

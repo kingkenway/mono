@@ -11,8 +11,8 @@
   <nav>
     <h1><a href="/">S.w.e.e.t Loans</a></h1>
     <ul>
-      <% if (user) { %>
-        <li>Welcome, <%= user.email %></li>
+      <% if (data && data.user) { %>
+        <li>Welcome, <%= data.user.email %></li>
         <li><a href="/logout">Log out</a></li>
       <% } else { %>
         <li><a href="/login">Log in</a></li>

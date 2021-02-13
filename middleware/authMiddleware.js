@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const Mono = require('../models/Mono');
 const Balance = require('../models/Balance');
+const {reauthorise} = require('../controllers/allControllers');
 
 const secret = process.env.MONO_WEBHOOK_SEC;
 
@@ -36,20 +36,14 @@ const checkUser = (req, res, next) => {
 			}else{
 				let monoBalance = ""
 				let user = await User.findById(decodedToken.id)
-				res.locals.user = user;
-
-				let monoAccount = await Mono.findOne({ userId:user.id })
-
-				console.log(user.id);
-
-				if (monoAccount && monoAccount['monoId']){
-					monoBalance = await Balance.findOne({ monoId:monoAccount.monoId })
+				
+				if (user && user['monoId']){
+					monoBalance = await Balance.findOne({ monoId:user.monoId })
 				}
-
-
-				res.locals.mono = {
-					data: monoAccount,
-					balance: monoBalance,
+				
+				res.locals.data = {
+					user,
+					monoBalance,
 					publicKey: process.env['MONO_PUBLIC_KEY'],
 					secretKey: process.env['MONO_SECRET_KEY']
 				}
@@ -58,8 +52,7 @@ const checkUser = (req, res, next) => {
 			}
 		});
 	}else{
-		res.locals.user = null;
-		res.locals.mono = null;
+		res.locals.data = null;
 		next();
 	}
 }
@@ -74,4 +67,14 @@ const verifyWebhook = (req, res, next) => {
     next();
 }
 
-module.exports = { requireAuth, checkUser, verifyWebhook };
+const requireMonoReauthToken = ( req, res, next) => {
+	if (res.locals.data.user.monoStatus) {
+		const reauthoriseToken = reauthorise(res.locals.data.user.monoId)
+		res.locals.data.reauth = {reauthoriseToken}
+		res.redirect('/monoReauth');
+	}else{
+		next();
+	}
+}
+
+module.exports = { requireAuth, checkUser, verifyWebhook, requireMonoReauthToken };

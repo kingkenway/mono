@@ -1,11 +1,12 @@
-const Mono = require('../models/Mono');
+const User = require('../models/User');
 const Balance = require('../models/Balance');
 const fetch = require('node-fetch');
 
 module.exports.dashboard = async (req,res, next) => {
 
-	if( res.locals.mono.data != null ){
-		const url = `https://api.withmono.com/accounts/${res.locals.mono['data']['monoId']}/identity`
+	if(res.locals.data.user.monoId){
+
+		const url = `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/identity`
 
 		const response = await fetch(url, { 
 			method: 'GET', 
@@ -25,10 +26,10 @@ module.exports.dashboard = async (req,res, next) => {
 
 }
 
-
 module.exports.dashboardPost = async (req,res, next) => {
 	// Retrieve code and user id from front end
 	const { code, id } = req.body;
+
 	url = "https://api.withmono.com/account/auth";
 
 	if(code){
@@ -42,23 +43,20 @@ module.exports.dashboardPost = async (req,res, next) => {
 			}
 		}).then(res_ => res_.json())
 		  .then(function (res_) {
-			// res.status(200).json(res_)
-		
-			// try{
 
-			// Create instance in our Mono Collection
-			const user = Mono({ userId: id, monoId: res_.id, monoCode: code }).save();
-
-			// Create instance in our Balance Collection
+			const dispatch = {
+				$set: {
+					monoId: res_.id,
+					monoCode: code
+				}
+			}
+			
+			// Update collection with mono id and code
+			User.updateOne({_id: id}, dispatch, {new: true}, function(err, res) {});
+			// Create instance in our balance collection
 			Balance({ monoId: res_.id }).save();
-			res.status(200).json({ user })
-
-
-			// }
-			// catch (err){
-			// 	res.status(400).json({ errors: "errors" });
-			// }
-
+			
+			res.status(200).json('done')
 		  })  
 		  .catch(err => res.status(501).send("Error fetching id"));
 
@@ -74,12 +72,8 @@ module.exports.dashboardPost = async (req,res, next) => {
 
 
 module.exports.balances = async (req,res, next) => {
-	console.log(res.locals.mono.data);
-	if( res.locals.mono.data != null ){
-
-		console.log(res.locals.mono.balance);
-
-		const url = `https://api.withmono.com/accounts/${res.locals.mono.data.monoId}`
+	if(res.locals.data.user.monoId){
+		const url = `https://api.withmono.com/accounts/${res.locals.data.user.monoId}`
 
 		const response = await fetch(url, { 
 			method: 'GET', 
@@ -91,9 +85,6 @@ module.exports.balances = async (req,res, next) => {
 
 		const data = await response.json();
 		res.locals.balances = data;
-
-		// console.log(data);
-
 		next();
 	}
 	else{
@@ -103,12 +94,8 @@ module.exports.balances = async (req,res, next) => {
 }
 
 module.exports.transactions = async (req,res, next) => {
-	if( res.locals.mono.data != null ){
-		const url = req.query.page || `https://api.withmono.com/accounts/${res.locals.mono.data.monoId}/transactions`
-		
-		// const url = `https://api.withmono.com/accounts/5f171a530295e231abca1153/transactions`
-
-		// const url = page
+	if(res.locals.data.user.monoId){
+		const url = req.query.page || `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/transactions`
 
 		const response = await fetch(url, { 
 			method: 'GET', 
@@ -130,9 +117,9 @@ module.exports.transactions = async (req,res, next) => {
 }
 
 module.exports.alltransactions = async (req,res, next) => {
-	if( res.locals.mono.data != null ){
+	if(res.locals.data.user.monoId){
 
-		let url = `https://api.withmono.com/accounts/${res.locals.mono.data.monoId}/transactions`	
+		let url = `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/transactions`	
 		// const url = `https://api.withmono.com/accounts/5f171a530295e231abca1153/transactions`
 		let page = req.query.page || 1
 		let finalUrl = url + `?page=${page}`
@@ -148,8 +135,6 @@ module.exports.alltransactions = async (req,res, next) => {
 		const data = await response.json();
 		res.locals.transactions = data;
 
-		console.log(data);
-
 		next();
 
 	}
@@ -159,7 +144,7 @@ module.exports.alltransactions = async (req,res, next) => {
 
 }
 
-const reauthorise = async function(id){
+module.exports.reauthorise = async function(id){
 		let url = `https://api.withmono.com/accounts/${id}/reauthorise`	
 
 		const response = await fetch(url, { 
@@ -171,7 +156,7 @@ const reauthorise = async function(id){
 		});
 
 		const data = await response.json();
-		return data;
+		return data.token;
 }
 
 // NOTE
@@ -211,11 +196,7 @@ module.exports.webhook = async (req,res, next) => {
 				}
 			}
 
-			Balance.updateOne(query, result, {new: true}, function(err, res) {
-				// if (err) throw err;
-
-				// You could do other stuffs here if you want to				
-			});
+			await Balance.updateOne(query, result, {new: true}, function(err, res) {});
 
 			// webhook.data.account
 		}
@@ -228,24 +209,34 @@ module.exports.webhook = async (req,res, next) => {
 		// webhook.data.account._id
 
 		// You can retrieve your token here for re-authentication
-		reauthorise(webhook.data.account._id)
+		// reauthorise(webhook.data.account._id)
+		const query = {
+			monoId: data._id
+		};
+
+		const result = {
+			$set: {
+				monoStatus: true,
+			}
+		}
+
+		await User.updateOne(query, result, {new: true}, function(err, res) {});
 	}
 
 	else if (webhook.event == "mono.events.account_reauthorized") {
 		// webhook.data.account._id
 
-		// Account Id. will be sent on successful reauthorisation.
+		// Account Id. will be sent on successful reauthorisation. Nothing much to do here.
 	}
 
     return res.sendStatus(200);
 	
 }
 
-
 module.exports.manualSync = async (req,res, next) => {
 
-	if( res.locals.mono['data'] != null ){
-		const url = `https://api.withmono.com/accounts/${res.locals.mono['data']['monoId']}/sync`
+	if(res.locals.data.user.monoId){
+		const url = `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/sync`
 
 		// console.log(123412345);
 
