@@ -17,6 +17,8 @@
         onSuccess: function (response) {
             (async () => {
 
+                console.log('we in');
+
                 try {
                     const res = await fetch('/dashboard', { 
                         method: 'POST', 
@@ -40,11 +42,12 @@
 
         },
         onClose: function () {
-        console.log('user closed the widget.')
+            console.log('user closed the widget.')
         }
     };
     connect = new Connect(config);
     connect.reauthorise(reauthToken);
+
     var launch = document.getElementById('launch-btn');
     launch.onclick = function (e) {
         connect.open();
