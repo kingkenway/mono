@@ -1,7 +1,8 @@
+const fetch = require('node-fetch');
 const User = require('../models/User');
 const Balance = require('../models/Balance');
 const WebH = require('../models/Webhook');
-const fetch = require('node-fetch');
+const {isDataAvailable} = require('../controllers/helper');
 
 module.exports.dashboard = async (req,res, next) => {
 
@@ -97,50 +98,66 @@ module.exports.balances = async (req,res, next) => {
 
 module.exports.transactions = async (req,res, next) => {
 	if(res.locals.data.user.monoId){
-		const url = req.query.page || `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/transactions`
 
-		const response = await fetch(url, { 
-			method: 'GET', 
-			headers: {
-				'Content-Type': 'application/json',
-				'mono-sec-key': process.env['MONO_SECRET_KEY']
-			}
-		});
+		if (await isDataAvailable(res.locals.data.user.monoId)) {
 
-		const data = await response.json();
+			const url = req.query.page || `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/transactions`
+
+			const response = await fetch(url, { 
+				method: 'GET', 
+				headers: {
+					'Content-Type': 'application/json',
+					'mono-sec-key': process.env['MONO_SECRET_KEY']
+				}
+			});
+
+			const data = await response.json();
+			res.locals.transactions = data;
+			next();
 		
-		res.locals.transactions = data;
-		next();
+		}
+
+		res.locals.transactions = "PROCESSING";
+		next()
+
 	}
 	else{
+		res.locals.transactions = null;
 		next();
 	}
 
 }
 
 module.exports.alltransactions = async (req,res, next) => {
+	
 	if(res.locals.data.user.monoId){
+		
+		// Check if data is still processing
+		if (await isDataAvailable(res.locals.data.user.monoId)) {
 
-		let url = `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/transactions`	
-		// const url = `https://api.withmono.com/accounts/5f171a530295e231abca1153/transactions`
-		let page = req.query.page || 1
-		let finalUrl = url + `?page=${page}`
+			let url = `https://api.withmono.com/accounts/${res.locals.data.user.monoId}/transactions`	
+			let page = req.query.page || 1
+			let finalUrl = url + `?page=${page}`
 
-		const response = await fetch(finalUrl, { 
-			method: 'GET', 
-			headers: {
-				'Content-Type': 'application/json',
-				'mono-sec-key': process.env['MONO_SECRET_KEY']
-			}
-		});
+			const response = await fetch(finalUrl, { 
+				method: 'GET', 
+				headers: {
+					'Content-Type': 'application/json',
+					'mono-sec-key': process.env['MONO_SECRET_KEY']
+				}
+			});
 
-		const data = await response.json();
-		res.locals.transactions = data;
+			const data = await response.json();
+			res.locals.transactions = data;
+			next();			
+		}
 
-		next();
+		res.locals.transactions = "PROCESSING";
+		next()
 
 	}
 	else{
+		res.locals.transactions = null;
 		next();
 	}
 

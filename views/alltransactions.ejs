@@ -5,7 +5,14 @@
   Your Transactions
   <hr />
 
-  <% if ( data['user']['monoId'] ) { %>
+  <% if ( transactions && transactions == "PROCESSING" ) { %>
+    
+    <div class="w3-center">
+        Transaction data is still processing.
+    </div>
+
+  <% } else if ( data['user']['monoId'] ) { %>
+
     <h2>
         All Transactions
         <hr>

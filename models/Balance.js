@@ -34,7 +34,9 @@ const balanceSchema = new mongoose.Schema({
 		type: String,
         default: ''
 	},
-});
+},
+{ timestamps: true }
+);
 
 const Balance = mongoose.model('balance', balanceSchema);
 

@@ -27,6 +27,7 @@
                     });
 
                     const val = await res.json();
+                    alert(val)
                     console.log(val);
                 
                     if (val) {
@@ -36,6 +37,7 @@
                 }
                 catch (err) {
                     console.log(err);
+                    alert(err);
                 }
             
 			})();

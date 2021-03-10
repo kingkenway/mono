@@ -23,9 +23,14 @@
     document.execCommand('copy');
     document.body.removeChild(elm);
   };
+
+  const reauthToken = "nyd96OgGzRtRBNx2S1OiLxBbkBo5";
+
+
+
   var connect;
   var config = {
-    key: "live_pk_tYkWmYOTJhPGFDlpjqp6",
+    key: "live_pk_Qv6rON9yvEEDloiujrcM",
     onSuccess: function (response) {
       copyToClipboard(response.code);
       console.log(JSON.stringify(response));
@@ -42,6 +47,9 @@
   };
   connect = new Connect(config);
   connect.setup();
+  // connect.reauthorise(reauthToken);
+  // code_ccE0Ck7o1zeXHTlJGVMb
+
   var launch = document.getElementById('launch-btn');
   launch.onclick = function (e) {
     connect.open();
